@@ -550,14 +550,26 @@ SNS：${sns}
   }
 
   function showToast(msg, duration) {
+    // 既存トースト除去
+    const old = document.querySelector('.toast');
+    if (old) old.remove();
+
     const toast = document.createElement('div');
     toast.className = 'toast';
     toast.textContent = msg;
-    document.body.appendChild(toast);
+
+    // LINEボタンの直下（cta-line-wrapper内）に挿入
+    const wrapper = lineBtn.closest('.cta-line-wrapper');
+    if (wrapper) {
+      wrapper.appendChild(toast);
+    } else {
+      lineBtn.parentElement.appendChild(toast);
+    }
+
     setTimeout(() => {
       toast.classList.add('toast--fade');
       setTimeout(() => toast.remove(), 300);
-    }, duration || 1200);
+    }, duration || 2000);
   }
 
   lineBtn.addEventListener('click', async () => {
@@ -565,13 +577,17 @@ SNS：${sns}
     const ok = await copyToClipboard(text);
 
     if (isMobile()) {
-      // モバイル → トースト表示 → 0.6秒後に公式LINEへ遷移
-      showToast('コピーしました。LINEを開きます', 1200);
-      setTimeout(() => {
-        window.location.href = OFFICIAL_LINE_URL;
-      }, 600);
+      // モバイル → トースト表示 → 描画確定後 1.0秒で公式LINEへ遷移
+      showToast('コピーしました。LINEを開きます', 2000);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            window.location.href = OFFICIAL_LINE_URL;
+          }, 1000);
+        });
+      });
     } else {
-      // PC → コピー結果をトースト表示
+      // PC → コピー結果をトースト表示（遷移なし）
       if (ok) {
         showToast('コピーしました。LINEアプリで貼り付けて送信してください。', 4000);
       } else {
