@@ -313,11 +313,12 @@ document.addEventListener('DOMContentLoaded', () => {
   checkMeishiWarning();
 
   // ========== 7) LINE送信 ==========
+  const OFFICIAL_LINE_URL = 'https://lin.ee/48ytUxF';
   const lineBtn = document.getElementById('line-btn');
   const copyNotice = document.getElementById('copy-notice');
 
   function isMobile() {
-    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    return /iPhone|Android/i.test(navigator.userAgent);
   }
 
   function getOptionsDetailText(containerId) {
@@ -418,16 +419,15 @@ SNS：${sns}
 
   lineBtn.addEventListener('click', async () => {
     const text = buildLineText();
+    const ok = await copyToClipboard(text);
 
-    if (isMobile() && text.length < 900) {
-      // モバイル＆短文 → LINEスキームで下書き挿入
-      const url = 'line://msg/text/' + encodeURIComponent(text);
-      window.location.href = url;
+    if (isMobile()) {
+      // モバイル → コピー後に公式LINEへ遷移
+      window.location.href = OFFICIAL_LINE_URL;
     } else {
-      // PC or 長文 → クリップボードコピー
-      const ok = await copyToClipboard(text);
+      // PC → コピー結果を表示
       if (ok) {
-        showCopyNotice('コピーしました。LINEを開いて貼り付けて送信してください。');
+        showCopyNotice('コピーしました。LINEアプリで貼り付けて送信してください。');
       } else {
         showCopyNotice('コピーに失敗しました。手動でコピーしてください。');
       }
