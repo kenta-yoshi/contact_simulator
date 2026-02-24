@@ -3,6 +3,8 @@
    ============================ */
 
 document.addEventListener('DOMContentLoaded', () => {
+  const STORAGE_KEY = 'contact_simulator_state';
+
   // ========== 1) トグル開閉 ==========
   const toggleBlocks = document.querySelectorAll('.toggle-block');
 
@@ -23,15 +25,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ========== 2) プラン選択（radio挙動はHTML側で完了、金額再計算のみ） ==========
+  // ========== 2) プラン選択 ==========
   const logoRadios = document.querySelectorAll('input[name="logo_plan"]');
   const hpRadios = document.querySelectorAll('input[name="hp_plan"]');
 
   logoRadios.forEach(r => r.addEventListener('change', () => {
     updateTotal();
     checkMeishiWarning();
+    saveState();
   }));
-  hpRadios.forEach(r => r.addEventListener('change', updateTotal));
+  hpRadios.forEach(r => r.addEventListener('change', () => {
+    updateTotal();
+    saveState();
+  }));
 
   // ========== 3) 追加オプション（＋－） ==========
   document.querySelectorAll('.option-row').forEach(row => {
@@ -46,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         countEl.textContent = count;
         updateTotal();
         checkMeishiWarning();
+        saveState();
       }
     });
 
@@ -55,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
       countEl.textContent = count;
       updateTotal();
       checkMeishiWarning();
+      saveState();
     });
   });
 
@@ -97,9 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
     totalTaxIncEl.textContent = formatYen(taxIncluded) + '（税込）';
   }
 
-  // 初期計算
-  updateTotal();
-
   // ========== 5) 確認画面フロー ==========
   const inputScreen = document.getElementById('input-screen');
   const confirmScreen = document.getElementById('confirm-screen');
@@ -115,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
       textarea: 'form-textarea--error'
     };
 
-    // 既存エラー表示を全てクリア
     document.querySelectorAll('.form-input--error, .form-select--error, .form-textarea--error')
       .forEach(el => el.classList.remove(errorClass.input, errorClass.select, errorClass.textarea));
     document.querySelectorAll('.form-error-msg').forEach(el => el.remove());
@@ -151,13 +155,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (errors.length > 0) {
-      // アラートメッセージ
       const alert = document.createElement('p');
       alert.className = 'validation-alert';
       alert.textContent = '必須項目を入力してください';
       confirmBtn.parentElement.insertBefore(alert, confirmBtn);
-
-      // 最初のエラーフィールドへスクロール
       errors[0].el.scrollIntoView({ behavior: 'smooth', block: 'center' });
       errors[0].el.focus();
       return false;
@@ -173,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     confirmScreen.style.display = 'block';
     totalBar.style.display = 'none';
     window.scrollTo(0, 0);
+    saveState();
   });
 
   backBtn.addEventListener('click', () => {
@@ -180,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
     inputScreen.style.display = 'block';
     totalBar.style.display = 'block';
     window.scrollTo(0, 0);
+    saveState();
   });
 
   function getSelectedPlanLabel(name) {
@@ -223,7 +226,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function buildConfirmContent() {
-    // お見積内容
     const estimateEl = document.getElementById('confirm-estimate-content');
     const logoPlan = getSelectedPlanLabel('logo_plan');
     const logoOptions = getSelectedOptions('logo-options');
@@ -243,7 +245,6 @@ document.addEventListener('DOMContentLoaded', () => {
     estimateHTML += '</div>';
     estimateEl.innerHTML = estimateHTML;
 
-    // 合計金額
     const totalArea = document.getElementById('confirm-total-area');
     const subtotal = getSelectedPlanPrice('logo_plan') + getSelectedPlanPrice('hp_plan')
       + getOptionsTotal('logo-options') + getOptionsTotal('hp-options');
@@ -255,7 +256,6 @@ document.addEventListener('DOMContentLoaded', () => {
       <p class="confirm-total__note">＊正式なお見積はヒアリング後に確定いたします。</p>
     `;
 
-    // ご相談内容
     const contactEl = document.getElementById('confirm-contact-content');
     const fullname = document.getElementById('fullname').value || '未入力';
     const furigana = document.getElementById('furigana').value || '未入力';
@@ -297,7 +297,6 @@ document.addEventListener('DOMContentLoaded', () => {
         warningEl.className = 'option-warning';
         warningEl.textContent = 'プレミアムプラン内に含まれています';
       }
-      // 名刺印刷代行ラベルのすぐ下（カード内）に挿入
       const label = meishiOptionRow.querySelector('.option-row__label');
       if (!meishiOptionRow.querySelector('.option-warning')) {
         label.insertAdjacentElement('afterend', warningEl);
@@ -309,10 +308,151 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 初期チェック
-  checkMeishiWarning();
+  // ========== 7) 状態保存・復元（localStorage） ==========
 
-  // ========== 7) LINE送信 ==========
+  function collectStateFromUI() {
+    // プラン
+    const logoPlan = document.querySelector('input[name="logo_plan"]:checked');
+    const hpPlan = document.querySelector('input[name="hp_plan"]:checked');
+    const urgency = document.querySelector('input[name="urgency"]:checked');
+
+    // オプション数量
+    const logoOptionCounts = {};
+    document.querySelectorAll('#logo-options .option-row').forEach(row => {
+      const key = row.dataset.option || row.querySelector('.option-row__label').textContent;
+      logoOptionCounts[key] = parseInt(row.querySelector('.option-row__count').textContent, 10);
+    });
+
+    const hpOptionCounts = {};
+    document.querySelectorAll('#hp-options .option-row').forEach(row => {
+      const key = row.dataset.option || row.querySelector('.option-row__label').textContent;
+      hpOptionCounts[key] = parseInt(row.querySelector('.option-row__count').textContent, 10);
+    });
+
+    // フォーム入力値
+    const formFields = {
+      fullname: document.getElementById('fullname').value,
+      furigana: document.getElementById('furigana').value,
+      email: document.getElementById('email').value,
+      sns: document.getElementById('sns').value,
+      deadline: document.getElementById('deadline').value,
+      'meeting-style': document.getElementById('meeting-style').value,
+      referral: document.getElementById('referral').value,
+      message: document.getElementById('message').value
+    };
+
+    // 画面状態
+    const screen = confirmScreen.style.display === 'block' ? 'confirm' : 'input';
+
+    return {
+      logoPlan: logoPlan ? logoPlan.value : null,
+      hpPlan: hpPlan ? hpPlan.value : null,
+      urgency: urgency ? urgency.value : null,
+      logoOptionCounts,
+      hpOptionCounts,
+      formFields,
+      screen
+    };
+  }
+
+  function applyStateToUI(state) {
+    if (!state) return;
+
+    // プラン復元
+    if (state.logoPlan) {
+      const r = document.querySelector(`input[name="logo_plan"][value="${state.logoPlan}"]`);
+      if (r) r.checked = true;
+    }
+    if (state.hpPlan) {
+      const r = document.querySelector(`input[name="hp_plan"][value="${state.hpPlan}"]`);
+      if (r) r.checked = true;
+    }
+    if (state.urgency) {
+      const r = document.querySelector(`input[name="urgency"][value="${state.urgency}"]`);
+      if (r) r.checked = true;
+    }
+
+    // オプション数量復元
+    if (state.logoOptionCounts) {
+      document.querySelectorAll('#logo-options .option-row').forEach(row => {
+        const key = row.dataset.option || row.querySelector('.option-row__label').textContent;
+        if (key in state.logoOptionCounts) {
+          row.querySelector('.option-row__count').textContent = state.logoOptionCounts[key];
+        }
+      });
+    }
+    if (state.hpOptionCounts) {
+      document.querySelectorAll('#hp-options .option-row').forEach(row => {
+        const key = row.dataset.option || row.querySelector('.option-row__label').textContent;
+        if (key in state.hpOptionCounts) {
+          row.querySelector('.option-row__count').textContent = state.hpOptionCounts[key];
+        }
+      });
+    }
+
+    // フォーム入力復元
+    if (state.formFields) {
+      Object.entries(state.formFields).forEach(([id, val]) => {
+        const el = document.getElementById(id);
+        if (el && val) {
+          el.value = val;
+          // deadline がdate値を持つ場合はtype=dateに切替
+          if (id === 'deadline' && val) el.type = 'date';
+        }
+      });
+    }
+
+    // 合計再計算
+    updateTotal();
+    checkMeishiWarning();
+
+    // 画面状態復元
+    if (state.screen === 'confirm') {
+      buildConfirmContent();
+      inputScreen.style.display = 'none';
+      confirmScreen.style.display = 'block';
+      totalBar.style.display = 'none';
+    }
+  }
+
+  function saveState() {
+    try {
+      const state = collectStateFromUI();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (e) { /* ignore */ }
+  }
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch (e) { return null; }
+  }
+
+  // フォーム入力イベントで自動保存
+  ['fullname', 'furigana', 'email', 'sns', 'deadline', 'message'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', saveState);
+  });
+  ['meeting-style', 'referral'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('change', saveState);
+  });
+  document.querySelectorAll('input[name="urgency"]').forEach(r => {
+    r.addEventListener('change', saveState);
+  });
+
+  // 初期復元
+  const savedState = loadState();
+  if (savedState) {
+    applyStateToUI(savedState);
+  } else {
+    updateTotal();
+    checkMeishiWarning();
+  }
+
+  // ========== 8) LINE送信 ==========
   const OFFICIAL_LINE_URL = 'https://lin.ee/48ytUxF';
   const lineBtn = document.getElementById('line-btn');
   const copyNotice = document.getElementById('copy-notice');
@@ -409,12 +549,15 @@ SNS：${sns}
     return fallbackCopy(text);
   }
 
-  function showCopyNotice(msg) {
-    copyNotice.textContent = msg;
-    copyNotice.style.display = 'block';
+  function showToast(msg, duration) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = msg;
+    document.body.appendChild(toast);
     setTimeout(() => {
-      copyNotice.style.display = 'none';
-    }, 6000);
+      toast.classList.add('toast--fade');
+      setTimeout(() => toast.remove(), 300);
+    }, duration || 1200);
   }
 
   lineBtn.addEventListener('click', async () => {
@@ -422,15 +565,19 @@ SNS：${sns}
     const ok = await copyToClipboard(text);
 
     if (isMobile()) {
-      // モバイル → コピー後に公式LINEへ遷移
-      window.location.href = OFFICIAL_LINE_URL;
+      // モバイル → トースト表示 → 0.6秒後に公式LINEへ遷移
+      showToast('コピーしました。LINEを開きます', 1200);
+      setTimeout(() => {
+        window.location.href = OFFICIAL_LINE_URL;
+      }, 600);
     } else {
-      // PC → コピー結果を表示
+      // PC → コピー結果をトースト表示
       if (ok) {
-        showCopyNotice('コピーしました。LINEアプリで貼り付けて送信してください。');
+        showToast('コピーしました。LINEアプリで貼り付けて送信してください。', 4000);
       } else {
-        showCopyNotice('コピーに失敗しました。手動でコピーしてください。');
+        showToast('コピーに失敗しました。手動でコピーしてください。', 4000);
       }
     }
   });
 });
+
