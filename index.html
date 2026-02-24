@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>お見積&ご相談専用フォーム | yoshi-kenta.design</title>
+    <meta name="description" content="ロゴ制作・ホームページ制作のお見積もりとご相談はこちらの専用フォームからお気軽にどうぞ。">
+    <!-- OGP -->
+    <meta property="og:title" content="お見積&ご相談専用フォーム | yoshi-kenta.design">
+    <meta property="og:description" content="ロゴ制作・ホームページ制作のお見積もりとご相談はこちらの専用フォームからお気軽にどうぞ。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kenta-yoshi.github.io/contact_simulator/">
+    <meta property="og:image" content="https://kenta-yoshi.github.io/contact_simulator/ogp.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://kenta-yoshi.github.io/contact_simulator/ogp.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- ===== ヘッダー ===== -->
+    <header class="header">
+        <div class="header__inner">
+            <img src="logo.png" alt="yoshi-kenta.design" class="header__logo">
+        </div>
+    </header>
+
+    <!-- ===== メインコンテンツ（入力画面） ===== -->
+    <main class="main" id="input-screen">
+        <div class="container">
+
+            <!-- タイトル -->
+            <section class="title-section">
+                <h1 class="title-section__heading">お見積&ご相談専用フォーム</h1>
+                <p class="title-section__desc">
+                    事前に概算のお見積を確認するだけの使用でも構いません。<br>
+                    お見積と併せてそのままご相談の専用フォームとしてもご利用頂けます。
+                </p>
+            </section>
+
+            <!-- ステップUI -->
+            <nav class="steps" aria-label="フォームステップ">
+                <ol class="steps__list">
+                    <li class="steps__item steps__item--active" data-step="1">
+                        <span class="steps__circle">入力</span>
+                    </li>
+                    <li class="steps__line"></li>
+                    <li class="steps__item" data-step="2">
+                        <span class="steps__circle">確認</span>
+                    </li>
+                    <li class="steps__line"></li>
+                    <li class="steps__item" data-step="3">
+                        <span class="steps__circle">送信</span>
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- ===== お見積セクション ===== -->
+            <section class="section" id="estimate-section">
+                <h2 class="section__label"><span class="section__label-bar"></span>お見積</h2>
+
+                <!-- ロゴ制作 -->
+                <div class="toggle-block" data-toggle="logo">
+                    <button type="button" class="toggle-block__header" aria-expanded="false">
+                        <span class="toggle-block__title">ロゴ制作</span>
+                        <span class="toggle-block__arrow" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                    </button>
+
+                    <div class="toggle-block__body">
+                        <!-- プランカード -->
+                        <div class="plan-cards">
+
+                            <!-- ライトプラン -->
+                            <label class="plan-card">
+                                <input type="radio" name="logo_plan" value="light" class="plan-card__radio"
+                                    data-price="100000" data-label="ライトプラン">
+                                <div class="plan-card__inner">
+                                    <span class="plan-card__name">ライトプラン</span>
+                                    <ul class="plan-card__features">
+                                        <li>・100,000円(税抜)</li>
+                                        <li>・提案数は2パターン、内1つを納品</li>
+                                        <li>・無料修正回数4回まで</li>
+                                        <li>・著作権譲渡</li>
+                                        <li>・お好みのカラー+白</li>
+                                        <li>・制作期間は約1ヶ月前後</li>
+                                    </ul>
+                                </div>
+                            </label>
+
+                            <!-- スタンダードプラン（選択状態） -->
+                            <label class="plan-card">
+                                <input type="radio" name="logo_plan" value="standard" class="plan-card__radio"
+                                    data-price="120000" data-label="スタンダードプラン">
+                                <div class="plan-card__inner">
+                                    <span class="plan-card__name">スタンダードプラン</span>
+                                    <ul class="plan-card__features">
+                                        <li>・120,000円(税抜)</li>
+                                        <li>・提案数は3パターン、内1つを納品</li>
+                                        <li>・修正回数無制限</li>
+                                        <li>・著作権譲渡</li>
+                                        <li>・お好みのカラー+白</li>
+                                        <li>・制作期間は約1ヶ月前後</li>
+                                    </ul>
+                                </div>
+                            </label>
+
+                            <!-- プレミアムプラン -->
+                            <label class="plan-card">
+                                <input type="radio" name="logo_plan" value="premium" class="plan-card__radio"
+                                    data-price="150000" data-label="プレミアムプラン">
+                                <div class="plan-card__inner">
+                                    <span class="plan-card__name">プレミアムプラン</span>
+                                    <ul class="plan-card__features">
+                                        <li>・150,000円(税抜)</li>
+                                        <li>・提案数は4パターン、内1つを納品</li>
+                                        <li>・名刺制作込み</li>
+                                        <li>・修正回数無制限</li>
+                                        <li>・著作権譲渡</li>
+                                        <li>・お好みのカラー+白</li>
+                                        <li>・制作期間は約1ヶ月半前後</li>
+                                    </ul>
+                                </div>
+                            </label>
+
+                        </div>
+
+                        <!-- 追加オプション -->
+                        <div class="options" id="logo-options">
+                            <h3 class="options__heading">追加オプション</h3>
+                            <div class="option-row" data-option="meishi" data-price="25000">
+                                <span class="option-row__label">名刺印刷代行：¥25,000</span>
+                                <div class="option-row__controls">
+                                    <button type="button" class="option-btn option-btn--minus"
+                                        aria-label="減らす">－</button>
+                                    <span class="option-row__count">0</span>
+                                    <button type="button" class="option-btn option-btn--plus"
+                                        aria-label="増やす">＋</button>
+                                </div>
+                            </div>
+                            <div class="option-row" data-option="print" data-price="30000">
+                                <span class="option-row__label">印刷代行：¥30,000</span>
+                                <div class="option-row__controls">
+                                    <button type="button" class="option-btn option-btn--minus"
+                                        aria-label="減らす">－</button>
+                                    <span class="option-row__count">0</span>
+                                    <button type="button" class="option-btn option-btn--plus"
+                                        aria-label="増やす">＋</button>
+                                </div>
+                            </div>
+                            <div class="option-row" data-option="design_add" data-price="30000">
+                                <span class="option-row__label">デザイン提案数追加：¥30,000</span>
+                                <div class="option-row__controls">
+                                    <button type="button" class="option-btn option-btn--minus"
+                                        aria-label="減らす">－</button>
+                                    <span class="option-row__count">0</span>
+                                    <button type="button" class="option-btn option-btn--plus"
+                                        aria-label="増やす">＋</button>
+                                </div>
+                            </div>
+                            <div class="option-row" data-option="moji" data-price="15000">
+                                <span class="option-row__label">文字組みの展開バリエーション追加：¥15,000</span>
+                                <div class="option-row__controls">
+                                    <button type="button" class="option-btn option-btn--minus"
+                                        aria-label="減らす">－</button>
+                                    <span class="option-row__count">0</span>
+                                    <button type="button" class="option-btn option-btn--plus"
+                                        aria-label="増やす">＋</button>
+                                </div>
+                            </div>
+                            <div class="option-row" data-option="color_add" data-price="8000">
+                                <span class="option-row__label">納品カラー追加：¥8,000</span>
+                                <div class="option-row__controls">
+                                    <button type="button" class="option-btn option-btn--minus"
+                                        aria-label="減らす">－</button>
+                                    <span class="option-row__count">0</span>
+                                    <button type="button" class="option-btn option-btn--plus"
+                                        aria-label="増やす">＋</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ホームページ制作 -->
+                <div class="toggle-block" data-toggle="hp">
+                    <button type="button" class="toggle-block__header" aria-expanded="false">
+                        <span class="toggle-block__title">ホームページ制作</span>
+                        <span class="toggle-block__arrow" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                    </button>
+
+                    <div class="toggle-block__body">
+                        <!-- プランカード -->
+                        <div class="plan-cards">
+
+                            <!-- 名刺代わりの1ページ型 -->
+                            <label class="plan-card">
+                                <input type="radio" name="hp_plan" value="light" class="plan-card__radio"
+                                    data-price="100000" data-label="名刺代わりの1ページ型">
+                                <div class="plan-card__inner">
+                                    <span class="plan-card__name">名刺代わりの1ページ型</span>
+                                    <p class="plan-card__desc">
+                                        会社概要・サービス内容等を1ページにまとめ、シンプルでわかりやすい構成。
+                                        まずは「存在を伝える」ことを目的としたサイトに最適です。
+                                        起業したばかり、費用を抑えたい方向け
+                                    </p>
+                                    <span class="plan-card__price">¥100,000〜</span>
+                                </div>
+                            </label>
+
+                            <!-- 下層ページ5前後の規模サイト（選択状態） -->
+                            <label class="plan-card">
+                                <input type="radio" name="hp_plan" value="standard" class="plan-card__radio"
+                                    data-price="200000" data-label="下層ページ×5前後の規模サイト">
+                                <div class="plan-card__inner">
+                                    <span class="plan-card__name">下層ページ×5前後の規模サイト</span>
+                                    <p class="plan-card__desc">例）</p>
+                                    <ul class="plan-card__features">
+                                        <li>■TOP</li>
+                                        <li>・私たちについて</li>
+                                        <li>・会社概要</li>
+                                        <li>・事業内容</li>
+                                        <li>・よくある質問</li>
+                                        <li>・お問い合わせ</li>
+                                    </ul>
+                                    <span class="plan-card__price">¥200,000〜</span>
+                                </div>
+                            </label>
+
+                            <!-- 下層ページ10以上 -->
+                            <label class="plan-card">
+                                <input type="radio" name="hp_plan" value="premium" class="plan-card__radio"
+                                    data-price="300000" data-label="下層ページ×10以上規模のサイト">
+                                <div class="plan-card__inner">
+                                    <span class="plan-card__name">下層ページ×10以上規模のサイト</span>
+                                    <p class="plan-card__desc">例）</p>
+                                    <ul class="plan-card__features plan-card__features--two-col">
+                                        <li>■TOP</li>
+                                        <li>6.チーム紹介</li>
+                                        <li>1.コンセプト</li>
+                                        <li>7.代表挨拶の想い</li>
+                                        <li>2.ブランドストーリー</li>
+                                        <li>8.ブログ/コラム</li>
+                                        <li>3.私たちの強み</li>
+                                        <li>9.採用情報</li>
+                                        <li>4.サービス一覧</li>
+                                        <li>10.お問い合わせ</li>
+                                        <li>5.制作実績</li>
+                                    </ul>
+                                    <span class="plan-card__price">¥300,000〜</span>
+                                </div>
+                            </label>
+
+                        </div>
+
+                        <!-- 追加オプション -->
+                        <div class="options" id="hp-options">
+                            <h3 class="options__heading">追加オプション</h3>
+                            <div class="option-row" data-option="page_add" data-price="30000">
+                                <span class="option-row__label">1ページ追加：¥30,000</span>
+                                <div class="option-row__controls">
+                                    <button type="button" class="option-btn option-btn--minus"
+                                        aria-label="減らす">－</button>
+                                    <span class="option-row__count">0</span>
+                                    <button type="button" class="option-btn option-btn--plus"
+                                        aria-label="増やす">＋</button>
+                                </div>
+                            </div>
+                            <div class="option-row" data-option="gsc" data-price="10000">
+                                <span class="option-row__label">Google Search Console登録代行：¥10,000</span>
+                                <div class="option-row__controls">
+                                    <button type="button" class="option-btn option-btn--minus"
+                                        aria-label="減らす">－</button>
+                                    <span class="option-row__count">0</span>
+                                    <button type="button" class="option-btn option-btn--plus"
+                                        aria-label="増やす">＋</button>
+                                </div>
+                            </div>
+                            <div class="option-row" data-option="ga" data-price="15000">
+                                <span class="option-row__label">Google Analytics設定代行：¥15,000</span>
+                                <div class="option-row__controls">
+                                    <button type="button" class="option-btn option-btn--minus"
+                                        aria-label="減らす">－</button>
+                                    <span class="option-row__count">0</span>
+                                    <button type="button" class="option-btn option-btn--plus"
+                                        aria-label="増やす">＋</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== ご相談フォーム ===== -->
+            <section class="section" id="contact-section">
+                <h2 class="section__label"><span class="section__label-bar"></span>ご相談</h2>
+
+                <div class="form-block">
+                    <!-- お名前 / フリガナ -->
+                    <div class="form-row form-row--half">
+                        <div class="form-group">
+                            <label class="form-label" for="fullname">お名前（フルネーム）<span
+                                    class="form-label__req">＊</span></label>
+                            <input type="text" id="fullname" class="form-input" placeholder="お名前をご入力ください">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="furigana">フリガナ<span class="form-label__req">＊</span></label>
+                            <input type="text" id="furigana" class="form-input" placeholder="フリガナをご入力ください">
+                        </div>
+                    </div>
+
+                    <!-- メール / SNS -->
+                    <div class="form-row form-row--half">
+                        <div class="form-group">
+                            <label class="form-label" for="email">メールアドレス<span class="form-label__req">＊</span></label>
+                            <input type="email" id="email" class="form-input" placeholder="メールアドレスをご入力ください">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="sns">SNS</label>
+                            <input type="text" id="sns" class="form-input" placeholder="共有可能なSNSがございましたらURLをご入力ください">
+                        </div>
+                    </div>
+
+                    <!-- 希望納期 -->
+                    <div class="form-row form-row--half">
+                        <div class="form-group">
+                            <label class="form-label" for="deadline">希望納期<span class="form-label__req">＊</span></label>
+                            <p class="form-hint">ロゴの制作期間：約1ヶ月〜1ヶ月半程度<br>HPの制作期間：約1ヶ月〜2ヶ月前後（内容に応じて変動有）</p>
+                            <div class="form-date-wrapper">
+                                <span class="form-date-icon" aria-hidden="true">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#888"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                        <line x1="16" y1="2" x2="16" y2="6" />
+                                        <line x1="8" y1="2" x2="8" y2="6" />
+                                        <line x1="3" y1="10" x2="21" y2="10" />
+                                    </svg>
+                                </span>
+                                <input type="text" id="deadline" class="form-input form-input--date"
+                                    placeholder="カレンダーのアイコンをタップして希望日を選択して下さい"
+                                    onfocus="this.type='date';this.showPicker?.()"
+                                    onblur="if(!this.value)this.type='text'">
+                            </div>
+                            <div class="form-radios">
+                                <label class="form-radio">
+                                    <input type="radio" name="urgency" value="consult" checked>
+                                    <span class="form-radio__label">相談して決めたい</span>
+                                </label>
+                                <label class="form-radio">
+                                    <input type="radio" name="urgency" value="not_urgent">
+                                    <span class="form-radio__label">急ぎではない</span>
+                                </label>
+                                <label class="form-radio">
+                                    <input type="radio" name="urgency" value="asap">
+                                    <span class="form-radio__label">急ぎではないが出来るだけ早め希望</span>
+                                </label>
+                                <label class="form-radio">
+                                    <input type="radio" name="urgency" value="urgent">
+                                    <span class="form-radio__label">急ぎ</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 打ち合わせの形式 -->
+                        <div class="form-group">
+                            <label class="form-label" for="meeting-style">打ち合わせの形式<span
+                                    class="form-label__req">＊</span></label>
+                            <div class="form-select-wrapper">
+                                <select id="meeting-style" class="form-select">
+                                    <option value="" disabled selected>選択して下さい</option>
+                                    <option value="online">・オンライン</option>
+                                    <option value="face">・対面（都内限定）</option>
+                                    <option value="text">・テキストのみ</option>
+                                    <option value="any">・特にこだわらない</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- きっかけ -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="referral">当方を知ったきっかけ<span
+                                    class="form-label__req">＊</span></label>
+                            <div class="form-select-wrapper">
+                                <select id="referral" class="form-select">
+                                    <option value="" disabled selected>選択して下さい</option>
+                                    <option value="instagram">・Instagram</option>
+                                    <option value="threads">・Threads</option>
+                                    <option value="note">・note</option>
+                                    <option value="facebook">・Facebook</option>
+                                    <option value="x">・X</option>
+                                    <option value="google">・Google検索</option>
+                                    <option value="referral">・ご紹介</option>
+                                    <option value="other">・その他</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- お問い合わせ内容 -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="message">お問い合わせ内容<span
+                                    class="form-label__req">＊</span></label>
+                            <textarea id="message" class="form-textarea" rows="6"
+                                placeholder="お問い合わせ内容をご入力下さい"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTAボタン -->
+            <div class="cta-area">
+                <button type="button" class="cta-btn" id="confirm-btn">
+                    確認画面へ進む
+                    <span class="cta-btn__arrow" aria-hidden="true">▶</span>
+                </button>
+            </div>
+
+        </div><!-- /.container -->
+    </main>
+
+    <!-- ===== 確認画面 ===== -->
+    <section class="main confirm-screen" id="confirm-screen" style="display:none;">
+        <div class="container">
+
+            <section class="title-section">
+                <h1 class="title-section__heading">お見積&ご相談専用フォーム</h1>
+                <p class="title-section__desc">
+                    事前に概算のお見積を確認するだけの使用でも構いません。<br>
+                    お見積と併せてそのままご相談の専用フォームとしてもご利用頂けます。
+                </p>
+            </section>
+
+            <!-- ステップUI（確認画面用） -->
+            <nav class="steps" aria-label="フォームステップ">
+                <ol class="steps__list">
+                    <li class="steps__item steps__item--active" data-step="1">
+                        <span class="steps__circle">入力</span>
+                    </li>
+                    <li class="steps__line"></li>
+                    <li class="steps__item steps__item--active" data-step="2">
+                        <span class="steps__circle">確認</span>
+                    </li>
+                    <li class="steps__line"></li>
+                    <li class="steps__item" data-step="3">
+                        <span class="steps__circle">送信</span>
+                    </li>
+                </ol>
+            </nav>
+
+            <section class="section">
+                <h2 class="section__label"><span class="section__label-bar"></span>入力内容の確認</h2>
+
+                <div class="confirm-card">
+                    <h3 class="confirm-card__title">【お見積&ご相談】</h3>
+
+                    <div class="confirm-section">
+                        <h4 class="confirm-section__heading">■ お見積</h4>
+                        <div id="confirm-estimate-content"></div>
+                    </div>
+
+                    <div class="confirm-section">
+                        <div class="confirm-total-area" id="confirm-total-area"></div>
+                    </div>
+
+                    <hr class="confirm-divider">
+
+                    <div class="confirm-section">
+                        <h4 class="confirm-section__heading">■ ご相談</h4>
+                        <div id="confirm-contact-content"></div>
+                    </div>
+                </div>
+
+                <!-- ボタンエリア -->
+                <div class="cta-area cta-area--confirm">
+                    <div class="cta-buttons">
+                        <button type="button" class="cta-btn cta-btn--outline" id="back-btn">
+                            修正する
+                        </button>
+                        <div class="cta-line-wrapper">
+                            <p class="cta-hint">以下のボタンをタップするとLINEが開き、内容が入力されます。</p>
+                            <button type="button" class="cta-btn cta-btn--line" id="line-btn">
+                                <svg class="cta-btn__line-icon" width="24" height="24" viewBox="0 0 24 24" fill="#fff">
+                                    <path
+                                        d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.271.173-.508.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M12 1c-6.627 0-12 4.208-12 9.399 0 4.662 4.139 8.564 9.724 9.301.378.082.89.258 1.02.592.118.301.077.77.038 1.072l-.164 1.005c-.051.301-.234 1.178 1.032.643 1.266-.535 6.828-4.023 9.314-6.885C22.846 14.01 24 11.868 24 9.399 24 5.208 18.627 1 12 1" />
+                                </svg>
+                                LINEで送信する
+                            </button>
+                            <p class="cta-copy-notice" id="copy-notice" style="display:none;"></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </section>
+
+    <!-- ===== 合計金額バー（下部固定） ===== -->
+    <div class="total-bar" id="total-bar">
+        <div class="total-bar__inner">
+            <div class="total-bar__content">
+                <span class="total-bar__tax-exc" id="total-tax-exc">¥0（税抜）</span>
+                <div class="total-bar__main">
+                    <span class="total-bar__label">合計金額</span>
+                    <span class="total-bar__amount" id="total-tax-inc">¥0（税込）</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
