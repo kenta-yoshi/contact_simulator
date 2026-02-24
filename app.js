@@ -495,7 +495,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const referral = getReferralLabel();
     const message = document.getElementById('message').value || '未入力';
 
-    return `【お見積&ご相談専用フォーム回答】
+    return `【専用フォーム回答】
 ■お見積
 ロゴ制作：
 - プラン：${logoPlan}
