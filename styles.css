@@ -671,6 +671,7 @@ button {
   align-items: center;
   width: 100%;
   max-width: 320px;
+  position: relative;
 }
 
 .cta-line-wrapper .cta-btn {
@@ -709,14 +710,21 @@ button {
 
 /* Toast Notification */
 .toast {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  pointer-events: none;
   background: #f0f0f0;
   color: #444;
   font-size: 13px;
   font-weight: 500;
   padding: 10px 20px;
   border-radius: 20px;
-  margin-top: 12px;
+  margin-top: 8px;
   text-align: center;
+  white-space: nowrap;
   opacity: 1;
   transition: opacity 0.3s ease;
 }
