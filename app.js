@@ -583,7 +583,7 @@ SNS：${sns}
         requestAnimationFrame(() => {
           setTimeout(() => {
             window.location.href = OFFICIAL_LINE_URL;
-          }, 1000);
+          }, 1300);
         });
       });
     } else {
