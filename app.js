@@ -40,6 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }));
 
   // ========== 3) 追加オプション（＋－） ==========
+
+  // オプション行の選択状態（枠線強調）を更新
+  function updateOptionStyles() {
+    document.querySelectorAll('.option-row').forEach(row => {
+      const count = parseInt(row.querySelector('.option-row__count').textContent, 10);
+      row.classList.toggle('is-selected', count > 0);
+    });
+  }
+
   document.querySelectorAll('.option-row').forEach(row => {
     const minusBtn = row.querySelector('.option-btn--minus');
     const plusBtn = row.querySelector('.option-btn--plus');
@@ -52,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         countEl.textContent = count;
         updateTotal();
         checkMeishiWarning();
+        updateOptionStyles();
         saveState();
       }
     });
@@ -62,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
       countEl.textContent = count;
       updateTotal();
       checkMeishiWarning();
+      updateOptionStyles();
       saveState();
     });
   });
@@ -405,6 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 合計再計算
     updateTotal();
     checkMeishiWarning();
+    updateOptionStyles();
 
     // 画面状態復元
     if (state.screen === 'confirm') {
@@ -450,6 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     updateTotal();
     checkMeishiWarning();
+    updateOptionStyles();
   }
 
   // ========== 8) LINE送信 ==========

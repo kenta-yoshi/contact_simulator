@@ -333,11 +333,17 @@ button {
   justify-content: space-between;
   flex-wrap: wrap;
   padding: 14px 16px;
-  border: 1px solid #e8e8e8;
+  border: 2px solid #e8e8e8;
   border-radius: 8px;
   margin-bottom: 10px;
   background: #fff;
   min-height: 52px;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.option-row.is-selected {
+  border-color: #258ba1;
+  background: rgba(37, 139, 161, 0.06);
 }
 
 .option-row__label {
