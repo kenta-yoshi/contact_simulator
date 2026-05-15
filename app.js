@@ -26,18 +26,38 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ========== 2) プラン選択 ==========
-  const logoRadios = document.querySelectorAll('input[name="logo_plan"]');
-  const hpRadios = document.querySelectorAll('input[name="hp_plan"]');
+  // 同じプランを再クリックすると選択解除できるようにする
+  const selectedPlan = { logo_plan: null, hp_plan: null };
 
-  logoRadios.forEach(r => r.addEventListener('change', () => {
+  function setupPlanToggle(name, onChange) {
+    document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+      r.addEventListener('click', () => {
+        if (selectedPlan[name] === r) {
+          // 既に選択中のものを再クリック → 解除
+          r.checked = false;
+          selectedPlan[name] = null;
+          onChange();
+        } else {
+          selectedPlan[name] = r;
+          // 通常選択時は change イベントが onChange を呼ぶ
+        }
+      });
+      r.addEventListener('change', () => {
+        if (r.checked) selectedPlan[name] = r;
+        onChange();
+      });
+    });
+  }
+
+  setupPlanToggle('logo_plan', () => {
     updateTotal();
     checkMeishiWarning();
     saveState();
-  }));
-  hpRadios.forEach(r => r.addEventListener('change', () => {
+  });
+  setupPlanToggle('hp_plan', () => {
     updateTotal();
     saveState();
-  }));
+  });
 
   // ========== 3) 追加オプション（＋－） ==========
 
@@ -372,11 +392,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // プラン復元
     if (state.logoPlan) {
       const r = document.querySelector(`input[name="logo_plan"][value="${state.logoPlan}"]`);
-      if (r) r.checked = true;
+      if (r) {
+        r.checked = true;
+        selectedPlan.logo_plan = r;
+      }
     }
     if (state.hpPlan) {
       const r = document.querySelector(`input[name="hp_plan"][value="${state.hpPlan}"]`);
-      if (r) r.checked = true;
+      if (r) {
+        r.checked = true;
+        selectedPlan.hp_plan = r;
+      }
     }
     if (state.urgency) {
       const r = document.querySelector(`input[name="urgency"][value="${state.urgency}"]`);
